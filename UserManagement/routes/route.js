@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = require('../Schema/userSchema');
+const User = require('../models/userSchema');
 
 router.post('/signup',(req,res) => {
     bcrypt.hash(req.body.password,10, function(err, hash) {
@@ -25,6 +25,7 @@ router.post('/signup',(req,res) => {
                 res.status(200).send({
                     new_user: result
                 })
+                console.log(result);
             })
             .catch(err => {
                 res.status(500).send({
@@ -65,7 +66,8 @@ router.post('/login',(req,res) => {
                     )
                     return res.status(200).send({
                         token: token,
-                        username: user[0].username
+                        username: user[0].username,
+                        email: user[0].email
                     })
                 }
             })

@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const User = require("./Schema/userSchema");
-const routesUrl = require('./routes/route')
+const User = require("./models/userSchema");
+const Post = require("./models/postSchema");
+const routesUrl1 = require('./routes/route')
+const routesUrl2 = require('./UserInfo/route')
 
 mongoose.connect("mongodb://localhost/userdb");
 
@@ -9,7 +11,8 @@ const app = express();
 const port = 3000
 
 app.use(express.json());
-app.use('/user',routesUrl);
+app.use('/auth',routesUrl1);
+app.use('/user',routesUrl2)
 
 app.get('*',(req,res) => {
     res.send("wrong url");
