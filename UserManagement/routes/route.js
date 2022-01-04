@@ -8,7 +8,7 @@ const cookie = require('cookie-parser');
 const User = require('../models/userSchema');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
-const verifyEmail = require('../middleware/auth');
+const { verifyEmail }= require('../middleware/auth');
 
 const oAuth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
@@ -17,22 +17,8 @@ const oAuth2Client = new google.auth.OAuth2(
 
 oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
-const accessToken = oAuth2Client.getAccessToken();
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: 'kashyaphimanshu389@gmai.com',
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLEINT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken,
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-    });
-router.post('/signup',(req,res) => {
+router.post('/signup',async (req,res) => {
+    // const accessToken = await oAuth2Client.getAccessToken();
     bcrypt.hash(req.body.password,10, function(err, hash) {
         if(err){
             return res.status(401).send({
@@ -50,23 +36,36 @@ router.post('/signup',(req,res) => {
             })
             user.save()
             .then(result => {
-                mail_options = {
-                    from: 'Himanshu4218 <kashyaphimanshu398@gmail.com>',
-                    to: email, 
-                    subject: "mail test",
-                    html: '<h4>Please verify your email</h4> <a href="https://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>',
-                    text: msg 
-                }
+                // const transporter = nodemailer.createTransport({
+                //     service: 'gmail',
+                //     auth: {
+                //         type: 'OAuth2',
+                //         user: 'kashyaphimanshu389@gmai.com',
+                //         clientId: process.env.CLIENT_ID,
+                //         clientSecret: process.env.CLEINT_SECRET,
+                //         refreshToken: process.env.REFRESH_TOKEN,
+                //         accessToken: accessToken,
+                //     },
+                //     tls: {
+                //         rejectUnauthorized: false
+                //     }
+                //     });
+                // mail_options = {
+                //     from: 'Himanshu4218 <kashyaphimanshu398@gmail.com>',
+                //     to: email, 
+                //     subject: "mail test",
+                //     html: '<h4>Please verify your email</h4> <a href="https://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>',
+                //     text: msg 
+                // }
 
-                transporter.sendMail(mail_options,(err,result) => {
-                    if(err){
-                        res.status(401).send(err);
-                    }
-                    else{
-                        res.status(200).send(result);
-                    }
-                    transporter.close();
-                });
+                // transporter.sendMail(mail_options,(err,result) => {
+                //     if(err){
+                //         res.status(401).send(err);
+                //     }
+                //     else{
+                //         res.status(200).send(result);
+                //     }
+                // });
 
                 res.status(200).send({
                     new_user: result

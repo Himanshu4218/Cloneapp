@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Post = require("../models/postSchema");
 const Comment = require('../models/comment')
-const verify = require('../middleware/auth');
+const {verify} = require('../middleware/auth');
 
 router.get('/post',verify,(req,res) => {
     console.log(req.user);
@@ -68,20 +68,5 @@ router.delete('/post/:id',verify,(req,res) => {
         }
     })
 })
-
-// app.post("/post/:id/comment",verify, function (req, res) {
-//     Post.findById(req.params.id, (err,foundPost) => {
-//         if(err){
-
-//         }
-//         else{
-//             const comment = new Comment({
-//                 comment: req.body.comment,
-//                 Comment.author.id: req.user._id,
-//                 Comment.author.username: req.user.username
-//             })
-//         }
-//     })
-// });
 
 module.exports = router;

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const cookie = require('cookie-parser');
 const User = require('../models/userSchema');
 
-module.exports = (req,res,next) => {
+verify = (req,res,next) => {
     try{
         const token = req.cookies['access_token'];
         if(token){
@@ -23,7 +23,7 @@ module.exports = (req,res,next) => {
     }
 }
 
-module.exports = async (req,res,next) => {
+verifyEmail = async (req,res,next) => {
     try{
         const user = await User.find({email: req.body.email})
         if(user.email_verified){
@@ -37,3 +37,5 @@ module.exports = async (req,res,next) => {
         console.log(e);
         }
 }
+
+module.exports = { verify, verifyEmail};

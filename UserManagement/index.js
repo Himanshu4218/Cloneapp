@@ -20,6 +20,6 @@ app.get('*',(req,res) => {
     res.send("wrong url");
 });
 
-app.listen(port, () => {
-    console.log(`server is running on port ${port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`server is running on port ${process.env.PORT}`);
 })
