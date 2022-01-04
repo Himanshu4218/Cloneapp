@@ -8,6 +8,7 @@ const cookie = require('cookie-parser');
 const User = require('../models/userSchema');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
+const verifyEmail = require('../middleware/auth');
 
 const oAuth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
@@ -80,7 +81,7 @@ router.post('/signup',(req,res) => {
         }
     });
 })
-router.post('/login',(req,res) => {
+router.post('/login',verifyEmail,(req,res) => {
         User.find({username: req.body.username})                // returns array
         .exec((err,user) => {
             if(err){

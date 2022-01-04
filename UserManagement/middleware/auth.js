@@ -30,7 +30,7 @@ module.exports = async (req,res,next) => {
             next()
         }
         else{
-            console.log("not verified");
+            console.log("Please verify your email");
         }
     }
     catch(e){
