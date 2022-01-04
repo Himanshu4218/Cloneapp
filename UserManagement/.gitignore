@@ -2,3 +2,4 @@ node_modules
 _cacache
 _logs
 anonymous-cli-metrics.json
+.env
